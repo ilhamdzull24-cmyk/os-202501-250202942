@@ -1,6 +1,7 @@
 
 # Laporan Praktikum Minggu [2]
-Topik: [Tuliskan judul topik, misalnya "Arsitektur Sistem Operasi dan Kernel"]
+Topik: Struktur System Call dan Fungsi Kernel
+
 
 ---
 
@@ -13,8 +14,11 @@ Topik: [Tuliskan judul topik, misalnya "Arsitektur Sistem Operasi dan Kernel"]
 
 ## Tujuan
 Tuliskan tujuan praktikum minggu ini.  
-Contoh:  
-> Mahasiswa mampu menjelaskan fungsi utama sistem operasi dan peran kernel serta system call.
+1. Menjelaskan konsep dan fungsi system call dalam sistem operasi.
+2. Mengidentifikasi jenis-jenis system call dan fungsinya.
+3. Mengamati alur perpindahan mode user ke kernel saat system call terjadi.
+4. Menggunakan perintah Linux untuk menampilkan dan menganalisis system call.
+
 
 ---
 
