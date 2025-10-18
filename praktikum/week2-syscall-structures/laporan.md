@@ -93,7 +93,30 @@ Sertakan screenshot hasil percobaan atau diagram:
 ![Screenshot hasil](./screenshots/syscall_ls%20(2).png)
 ![Screenshot hasil](./screenshots/syscall_ls%20(3).png)
 ---
+**Eksperimen 1 – Analisis System Call**
+# Analisis System Call Hasil strace Perintah `ls`
 
+| No | Perintah / System Call | Fungsi Utama | Output Contoh dari strace | Tujuan / Keterangan |
+|----|--------------------------|---------------|----------------------------|---------------------|
+| 1 | `execve("/usr/bin/ls", ["ls"], 0x7ffeb16eff70 /* 26 vars */)` | Menjalankan program baru (`ls`) menggantikan proses sebelumnya | `= 0` artinya berhasil | Menjalankan biner `/usr/bin/ls` dengan argumen `["ls"]` dan membawa 26 variabel lingkungan (environment variables). |
+| 2 | `brk(NULL)` | Mengatur atau memeriksa posisi akhir segmen heap (memori dinamis) | `= 0x5a90f50d3000` | Mengecek batas awal heap sebelum alokasi memori dinamis dimulai. |
+| 3 | `arch_prctl(0x3001, 0x7ffc0334c750)` | Mengatur properti arsitektur CPU untuk proses (biasanya terkait register atau thread local storage) | `= -1 EINVAL (Invalid argument)` | Menunjukkan percobaan pengaturan tertentu gagal karena parameter tidak valid — hal ini normal dalam banyak program. |
+| 4 | `mmap(NULL, 8192, PROT_READ\|PROT_WRITE, MAP_PRIVATE\|MAP_ANONYMOUS, -1, 0)` | Memetakan area memori baru (8 KB) untuk digunakan program | `= 0x7f36723df000` | Menyediakan ruang memori anonim yang digunakan untuk struktur internal atau stack kecil. |
+| 5 | `access("/etc/ld.so.preload", R_OK)` | Mengecek apakah file `/etc/ld.so.preload` dapat dibaca | `= -1 ENOENT (No such file or directory)` | Mengecek file preload library sistem. Karena file tidak ada, sistem melanjutkan proses tanpa preload. |
+| 6 | `openat(AT_FDCWD, "/etc/ld.so.cache", O_RDONLY\|O_CLOEXEC)` | Membuka file cache library dinamis (`ld.so.cache`) | `= 3` (file descriptor 3) | Digunakan untuk mempercepat pencarian library yang diperlukan oleh program. |
+| 7 | `newfstatat(3, "", {st_mode=S_IFREG\|0644, st_size=19195, ...}, AT_EMPTY_PATH)` | Mengambil informasi metadata file (status, ukuran, mode, izin) dari file descriptor 3 | `= 0` | Mengecek detail file `/etc/ld.so.cache` seperti ukuran dan hak akses sebelum digunakan lebih lanjut. |
+
+## Eksperimen 2 – Menelusuri System Call File I/O
+- Pada hasil strace tersebut, terlihat bahwa kernel melakukan beberapa system call openat() dan read() untuk membuka serta membaca isi file yang diperlukan oleh program. Proses ini menunjukkan bahwa setiap kali program membutuhkan data dari suatu file (misalnya file konfigurasi atau data pengguna), kernel akan membuat file descriptor (biasanya angka seperti 3) untuk mengidentifikasi file tersebut dan mengizinkan program melakukan operasi baca tulis melalui descriptor itu.
+
+- Setelah file berhasil dibuka, kernel memproses permintaan baca menggunakan system call read(), yang bertugas mengambil isi file dari penyimpanan dan menyalurkannya ke ruang memori proses pengguna. Nilai kembalian dari read() (seperti = 1476) menunjukkan jumlah byte yang berhasil dibaca dari file tersebut. Jika kernel mengembalikan nilai 0, artinya proses pembacaan telah mencapai akhir file (EOF), dan tidak ada lagi data yang dapat diambil.
+
+- Setelah operasi pembacaan selesai, program akan menutup file menggunakan system call close(). Pemanggilan close() mengembalikan kontrol penuh kepada kernel untuk melepaskan sumber daya yang digunakan oleh file descriptor tersebut. Nilai keluaran = 0 menandakan bahwa penutupan berhasil dilakukan. Proses penutupan file ini penting agar tidak terjadi kebocoran file descriptor, yang dapat menghabiskan sumber daya sistem jika dibiarkan terbuka terus-menerus.
+
+- Secara keseluruhan, urutan system call seperti openat(), read(), dan close() memperlihatkan bagaimana interaksi antara program dan kernel dalam manajemen berkas berlangsung. Kernel bertanggung jawab membuka akses, mengatur pembacaan data dari media penyimpanan, lalu menutupnya kembali setelah selesai. Hal ini menunjukkan peran penting kernel dalam menjaga keamanan, efisiensi, dan stabilitas sistem operasi saat program berinteraksi dengan file.
+## Eksperimen 3 – Mode User vs Kernel
+
+ - Output log kernel berbeda dari output program biasa karena berasal dari inti sistem operasi (kernel), bukan dari aplikasi pengguna. Log kernel menampilkan pesan status, inisialisasi modul, atau error sistem dengan format waktu seperti [6.233638], sedangkan output program biasa menunjukkan hasil perintah atau proses yang dijalankan pengguna. Kernel log digunakan untuk diagnostik dan pemantauan sistem, sementara output program biasa berfungsi untuk interaksi langsung dengan pengguna.
 ## Analisis
 - Jelaskan makna hasil percobaan.  
  Makna hasil percobaan system call adalah membuktikan bahwa semua interaksi antara program pengguna dan sumber daya sistem harus melalui lapisan sistem operasi (kernel) dengan perantara system call, sehingga sistem tetap aman, stabil, dan terkontrol.
@@ -161,7 +184,10 @@ o	read(), write(), ioctl(), open(), close()
 ## Refleksi Diri
 Tuliskan secara singkat:
 - Apa bagian yang paling menantang minggu ini?  
-- Bagaimana cara Anda mengatasinya?  
+  selalu menantang
+- Bagaimana cara Anda mengatasinya? 
+ 
+  belajar bersama teman dan melihat tutorial
 
 ---
 
