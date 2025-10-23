@@ -125,6 +125,26 @@ Perintah pwd,ls -1,cd /tmp, dan ls -a
 
 - `ls -a` menampilkan semua file termasuk yang tersembunyi (berawalan titik), misalnya `.X11-unix `atau direktori yang digunakan `systemd`.
   
+  Catat direktori aktif, isi folder, dan file tersembunyi (jika ada).
+
+  Direktori aktif:
+  
+  `/home/ilham`
+
+  Isi folder /tmp:
+
+   `snap-private-tmp
+systemd-private-83d9ac843f5c47ecbf8c49a4006281be-systemd-logind.service-hE48EB
+systemd-private-83d9ac843f5c47ecbf8c49a4006281be-systemd-resolved.service-7T6yYO
+systemd-private-83d9ac843f5c47ecbf8c49a4006281be-systemd-timesyncd.service-cCQejA`
+
+File dan folder tersembunyi:
+
+- `.`
+- `..`
+- `.X11-unix`
+
+  
 **Eksperimen 2 – Membaca File**
 ---
 - Isi File /etc/passwd
@@ -143,31 +163,86 @@ Perintah pwd,ls -1,cd /tmp, dan ls -a
 
 **Eksperimen 3 – Permission & Ownership**
 ---
+Analisis perbedaan sebelum dan sesudah chmod.
+- Sebelum `chmod 600`, file percobaan.txt memiliki izin  -rw-r--r-- (644) — artinya pemilik dapat membaca dan menulis, sedangkan pengguna lain hanya bisa membaca.
 
-- Sebelum chmod 600, file percobaan.txt memiliki izin -rw-r--r-- (644) — artinya pemilik dapat membaca dan menulis, sedangkan pengguna lain hanya bisa membaca.
+- Setelah `chmod 600`, izin berubah menjadi -rw------- — hanya pemilik yang bisa membaca dan menulis, sedangkan pengguna lain tidak memiliki akses sama sekali.
 
-- Setelah chmod 600, izin berubah menjadi -rw------- — hanya pemilik yang bisa membaca dan menulis, sedangkan pengguna lain tidak memiliki akses sama sekali.
+Catat hasil :
 
+`-rw------- 1 root ilham 24 Oct 21 19:41 percobaan.txt`
+
+Artinya:
+
+- `-rw-------` → hanya pemilik (root) yang dapat membaca dan menulis file.
+
+- `root` → pemilik file sekarang adalah root.
+
+- `ilham` → grup file masih milik user ilham.
+
+- Ukuran: 18 byte
+
+- Tanggal & waktu: 24 Oktober 2021, pukul 19:41
+
+- Nama file: percobaan.txt
 ## Analisis
 - Jelaskan makna hasil percobaan.  
+  
+  Percobaan linux-fs-permission menunjukkan cara Linux mengatur hak akses file.
+Setiap file memiliki pemilik (owner), grup, dan lainnya (others) dengan izin read (r), write (w), dan execute (x).
+Perintah chmod digunakan untuk mengubah izin akses, sedangkan chown untuk mengganti pemilik file.
+
 - Hubungkan hasil dengan teori (fungsi kernel, system call, arsitektur OS).  
+  
+   - Fungsi Kernel
+Kernel adalah inti sistem operasi yang mengatur akses terhadap sumber daya seperti file, memori, dan perangkat keras.
+Saat pengguna menjalankan perintah seperti chmod atau chown, kernel memeriksa izin file melalui tabel permission di sistem file sebelum mengizinkan atau menolak akses.
+Jadi, kernel berperan sebagai pengontrol keamanan antara pengguna dan sistem.
+
+  - System Call
+ Perintah chmod, chown, dan ls sebenarnya memanggil system call seperti:
+
+    chmod() → mengubah mode (izin) file.
+
+    chown() → mengubah pemilik file.
+
+    stat() → membaca informasi metadata file.
+ System call ini menjadi jembatan antara program pengguna (user space) dan kernel (kernel space).
+
+   - Arsitektur Sistem Operasi
+Dalam arsitektur OS, terdapat dua lapisan utama:
+
+  User space: tempat user menjalankan perintah melalui shell.
+
+  Kernel space: tempat kernel mengeksekusi system call dan mengatur akses ke file system.
+  Saat user mengetik perintah di terminal, instruksi dikirim ke kernel melalui system call untuk dieksekusi dengan kontrol keamanan yang ketat.
+
+
 - Apa perbedaan hasil di lingkungan OS berbeda (Linux vs Windows)?  
+  
+  Di Linux, kontrol akses dilakukan melalui sistem izin tradisional berbasis bit (rwx), sedangkan di Windows menggunakan ACL yang lebih rinci. Meskipun berbeda mekanisme, keduanya bertujuan sama: menjaga keamanan dan membatasi akses file sesuai hak pengguna.
 
 
 
 ## Kesimpulan
-Tuliskan 2–3 poin kesimpulan dari praktikum ini.
 
+
+Praktikum Linux FS Permission menunjukkan bahwa Linux mengatur keamanan file melalui sistem izin read (r), write (w), dan execute (x) untuk owner, group, dan others. Perintah seperti chmod dan chown digunakan untuk mengatur akses, sementara kernel mengontrolnya melalui system call, memastikan hanya pengguna berhak yang dapat mengakses file.
 ---
 
 ## Quiz
 1. Apa fungsi dari perintah chmod? 
    
-   **Jawaban:**  
+   Perintah chmod berfungsi untuk mengubah hak akses (permission) pada file atau direktori di sistem operasi Linux/Unix.
+    
 2. Apa arti dari kode permission rwxr-xr--?
-   **Jawaban:**  
+   
+   kode rwxr-xr-- memberikan hak penuh (baca, tulis, eksekusi) kepada pemilik, hak baca dan eksekusi kepada grup, dan hanya hak baca kepada pengguna lain.
+    
 3.  Jelaskan perbedaan antara chown dan chmod.  
-   **Jawaban:**  
+     chmod() → mengubah mode (izin) file.
+
+    chown() → mengubah pemilik file.
 
 ---
 
@@ -175,8 +250,11 @@ Tuliskan 2–3 poin kesimpulan dari praktikum ini.
 Tuliskan secara singkat:
 - Apa bagian yang paling menantang minggu ini?  
   
+  selalu menantang
+
 - Bagaimana cara Anda mengatasinya?  
   
+  belajar bersama teman dan melihat tutorial
 
 ---
 
