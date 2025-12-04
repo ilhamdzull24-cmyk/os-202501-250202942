@@ -20,11 +20,47 @@ Topik: Sinkronisasi Proses dan Masalah Deadlock
 ---
 
 ## Tujuan
+Melalui praktikum ini, mahasiswa diharapkan mampu:
+
+1. Mengidentifikasi dan menjelaskan empat kondisi utama penyebab deadlock, yaitu:
+
+- Mutual Exclusion
+
+- Hold and Wait
+
+- No Preemption
+
+- Circular Wait
+
+2. Menganalisis bagaimana deadlock dapat terjadi pada implementasi Dining Philosophers yang menggunakan resource bersama tanpa mekanisme pengendalian yang tepat.
+
+3. Mengimplementasikan solusi sinkronisasi menggunakan semaphore atau monitor untuk mencegah terjadinya deadlock pada skenario Dining Philosophers.
+
+4. Membandingkan perbedaan antara versi deadlock dan versi yang telah diperbaiki, baik dari sisi perilaku program maupun keamanan sinkronisasi.
+
+5. Menerapkan konsep concurrency, critical section, dan akses sumber daya terbatas pada konteks pemrograman multithreaded.
+
+6. Berkolaborasi dalam kelompok untuk menganalisis, mengimplementasikan, dan mendokumentasikan hasil eksperimen secara sistematis dan terstruktur.
+
 
 ---
 
 ## Dasar Teori
-Tuliskan ringkasan teori (3–5 poin) yang mendasari percobaan.
+1. Concurrency dan Shared Resource
+Concurrency adalah eksekusi beberapa proses secara bersamaan yang membutuhkan pengaturan akses resource bersama agar tidak terjadi konflik.
+
+2. Critical Section & Race Condition
+Critical section adalah bagian program yang mengakses resource bersama. Jika tidak dikendalikan, dapat terjadi race condition sehingga proses menghasilkan output tidak konsisten.
+
+3. Deadlock
+Deadlock terjadi ketika proses saling menunggu resource yang tidak pernah dilepaskan. Deadlock muncul jika empat kondisi terpenuhi: mutual exclusion, hold and wait, no preemption, dan circular wait.
+
+4. Semaphore sebagai Mekanisme Sinkronisasi
+Semaphore digunakan untuk mengontrol akses resource menggunakan operasi acquire (wait) dan release (signal), sehingga hanya proses tertentu yang dapat masuk critical section.
+
+5. Strategi Pencegahan Deadlock
+Deadlock dapat dicegah dengan mengatur urutan pengambilan resource atau membatasi jumlah proses yang dapat mengakses resource secara bersamaan, seperti pada solusi Dining Philosophers.
+
 
 ---
 
@@ -97,19 +133,50 @@ dmesg | head
 
 ## Hasil Eksekusi
 Sertakan screenshot hasil percobaan atau diagram:
-![Screenshot hasil](screenshots/example.png)
+![Screenshot hasil](./screenshots/WhatsApp%20Image%202025-12-04%20at%2022.50.52_d6c01b64.jpg)
+
+![Screenshot hasil](./screenshots/WhatsApp%20Image%202025-12-04%20at%2022.50.51_4f95de67.jpg)
 
 ---
+## hasil eksperimen 1
+1. Analisis Alur (Penjelasan)
+Pada simulasi ini, setiap filosof mengikuti urutan langkah yang sama:
+Berpikir
+Mengambil garpu kiri
+Mengambil garpu kanan
+Makan
+Mengembalikan garpu
+2. Identifikasi Deadlock
+Kapan Deadlock Terjadi?
+Deadlock terjadi ketika:
+Semua filosof berhasil mengambil garpu kiri,
+Tetapi tidak ada satu pun yang mendapatkan garpu kanan, karena semua sudah dipegang oleh filosof di sebelahnya.
 
-## Analisis
-- Jelaskan makna hasil percobaan.  
-- Hubungkan hasil dengan teori (fungsi kernel, system call, arsitektur OS).  
-- Apa perbedaan hasil di lingkungan OS berbeda (Linux vs Windows)?  
+## hasil eksperimen 2
+Bukti Deadlock Terhindari
+Dengan membatasi maksimal 4 filosof yang boleh mengambil garpu pada saat bersamaan, minimal satu filosof pasti dapat memperoleh dua garpu dan berhasil makan, kemudian melepaskannya. Siklus ini memastikan sistem tetap berjalan dan tidak terjadi keadaan saling menunggu selamanya.
+
+## hasil eksperimen 3
+| **Kondisi Deadlock** | **Terjadi di Versi Deadlock?** | **Penjelasan pada Versi Deadlock**                                                          | **Solusi di Versi Fixed**                                                 | **Penjelasan Solusi**                                                                                                                                      |
+| -------------------- | ------------------------------ | ------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Mutual Exclusion** |  Ya                           | Setiap garpu hanya dapat digunakan oleh satu filosof pada satu waktu.                       | **Tetap Ada (Tidak dapat dihilangkan)** tetapi dikontrol dengan semaphore | Semaphore digunakan agar penggunaan garpu lebih teratur dan tidak saling berebut tanpa kontrol sinkronisasi.                                               |
+| **Hold and Wait**    |  Ya                           | Setiap filosof mengambil satu garpu dan menunggu garpu lainnya → menyebabkan waiting chain. | **Diminimalkan**                                                          | Dengan membatasi hanya 4 filosof yang bisa mengambil garpu (semaphore `room`), tidak semua filosof menunggu sambil memegang satu garpu.                    |
+| **No Preemption**    |  Ya                           | Garpu tidak dapat direbut paksa dari filosof yang sudah memegangnya.                        | **Tetap Ada**, tetapi tidak menimbulkan deadlock                          | Filosof hanya mengambil garpu jika tersedia. Setelah selesai makan garpu dilepas sesuai aturan semaphore, sehingga alur tetap berjalan.                    |
+| **Circular Wait**    |  Ya                           | Semua filosof mengambil garpu kiri terlebih dahulu → membentuk lingkaran menunggu.          | **Dihilangkan**                                                           | Dengan membatasi jumlah filosof yang makan (max 4), rantai menunggu melingkar tidak terbentuk, sehingga minimal satu filosof bisa makan dan melepas garpu. |
+
+Pada versi pertama semua kondisi deadlock terpenuhi, sehingga sistem dapat berhenti total ketika seluruh filosof saling menunggu garpu.
+
+Pada versi fixed dengan penggunaan semaphore dan pembatasan jumlah filosof yang boleh makan, kondisi deadlock diputus terutama pada bagian circular wait dan hold and wait, sehingga tidak terjadi kebuntuan.
+
 
 ---
 
 ## Kesimpulan
-Tuliskan 2–3 poin kesimpulan dari praktikum ini.
+Berdasarkan rangkaian percobaan yang telah dilakukan, dapat disimpulkan bahwa masalah Dining Philosophers merupakan contoh klasik dari permasalahan sinkronisasi dalam sistem operasi, khususnya terkait dengan pembagian sumber daya terbatas. Pada versi awal simulasi tanpa mekanisme pencegahan, sistem menunjukkan terjadinya deadlock akibat terpenuhinya empat kondisi utama: mutual exclusion, hold and wait, no preemption, dan circular wait. Hal ini menyebabkan seluruh proses berhenti dan tidak ada filosofi yang dapat melanjutkan kegiatan makan.
+
+Setelah diterapkan solusi menggunakan semaphore dan pembatasan jumlah filosof yang dapat mengakses sumber daya secara bersamaan, deadlock dapat dihindari. Mekanisme kontrol ini memutus kondisi circular wait dan mengurangi hold and wait, sehingga proses tetap berjalan secara bergilir dan teratur. Hasil modifikasi menunjukkan bahwa sinkronisasi yang tepat sangat penting untuk menjaga alokasi sumber daya agar tetap aman, efisien, dan bebas dari deadlock.
+
+Secara keseluruhan, praktikum ini memberikan pemahaman tentang konsep deadlock, penyebab terjadinya, serta strategi pencegahan menggunakan teknik sinkronisasi seperti semaphore dan monitor.
 
 ---
 
