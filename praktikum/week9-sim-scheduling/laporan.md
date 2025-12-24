@@ -81,7 +81,17 @@ Sertakan screenshot hasil percobaan atau diagram:
 ---
 
 ## Analisis
+1. Alur Program
 
+   Program diawali dengan penentuan data proses yang mencakup waktu kedatangan dan waktu proses. Kemudian, proses-proses tersebut diatur berdasarkan waktu kedatangan sesuai dengan metode FCFS. Program ini mensimulasikan pelaksanaan CPU secara berurutan, serta menghitung waktu tunggu dan waktu penyelesaian untuk masing-masing proses. Setelah seluruh proses selesai, hasilnya disajikan dalam format tabel beserta rata-ratanya.
+
+2. Perbandingan dengan Perhitungan Manual
+
+   Hasil dari simulasi menunjukkan waktu tunggu P1 = 0, P2 = 5, P3 = 12, dan P4 = 18 dengan rata-rata 8,75, serta waktu penyelesaian rata-rata 14,75. Angka-angka ini sesuai dengan hasil perhitungan manual, karena metode FCFS bergantung pada urutan kedatangan proses. Simulasi memberikan hasil yang sama tetapi dengan waktu yang lebih cepat dan efisien.
+
+3. Kelebihan dan Keterbatasan Simulasi
+
+   Simulasi memudahkan perhitungan, meminimalisir kesalahan, dan sangat berguna untuk jumlah proses yang banyak. Namun, simulasi ini masih dianggap mendasar karena belum memperhitungkan aspek nyata seperti pergantian konteks, I/O, dan sistem multiprosesor.
 
 ---
 
