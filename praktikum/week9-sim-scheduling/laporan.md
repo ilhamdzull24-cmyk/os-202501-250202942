@@ -49,6 +49,7 @@ Waiting Time adalah lamanya proses menunggu di antrian siap sebelum mulai diekse
 
 ## Kode / Perintah
 Berikut adalah potongan logika utama algoritma FCFS yang saya buat:
+
 ```python
 # Simulasi Algoritma Penjadwalan CPU
 # FCFS 
