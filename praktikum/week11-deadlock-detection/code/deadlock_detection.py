@@ -1,18 +1,20 @@
-import csv
+# deadlock_detection.py
 
-processes = []
-allocation = {}
-request = {}
+processes = ["P1", "P2", "P3"]
 
-with open("dataset_deadlock.csv", "r") as file:
-    reader = csv.DictReader(file)
-    for row in reader:
-        p = row["Process"]
-        processes.append(p)
-        allocation[p] = [row["Allocation"]]
-        request[p] = [row["Request"]]
+allocation = {
+    "P1": ["R1"],
+    "P2": ["R2"],
+    "P3": ["R3"]
+}
 
-available = []
+request = {
+    "P1": ["R2"],
+    "P2": ["R3"],
+    "P3": ["R1"]
+}
+
+available = []  # tidak ada resource bebas
 finish = {p: False for p in processes}
 
 changed = True
@@ -25,10 +27,9 @@ while changed:
                 available.extend(allocation[p])
                 changed = True
 
-deadlock = [p for p in processes if not finish[p]]
+deadlock_processes = [p for p in processes if not finish[p]]
 
-print("=== HASIL DETEKSI DEADLOCK ===")
-if deadlock:
-    print("Deadlock terdeteksi pada proses:", deadlock)
+if deadlock_processes:
+    print("Deadlock terdeteksi pada proses:", deadlock_processes)
 else:
     print("Tidak terjadi deadlock")

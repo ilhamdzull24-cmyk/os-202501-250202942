@@ -147,7 +147,9 @@ Setiap proses memegang satu sumber daya dan secara bersamaan meminta sumber daya
 ## Refleksi Diri
 Tuliskan secara singkat:
 - Apa bagian yang paling menantang minggu ini?  
+  
 - Bagaimana cara Anda mengatasinya?  
+
 
 ---
 
