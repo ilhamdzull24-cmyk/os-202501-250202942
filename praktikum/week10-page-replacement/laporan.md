@@ -42,6 +42,14 @@ Topik:  Manajemen Memori – Page Replacement (FIFO & LRU)
 
 5. Menyajikan hasil perbandingan dalam tabel di bagian Analisis.
 
+6. **Commit & Push**
+
+   ```bash
+   git add .
+   git commit -m "Minggu 10 - Page Replacement FIFO & LRU"
+   git push origin main
+   ```
+
 ---
 
 ## Kode / Perintah
