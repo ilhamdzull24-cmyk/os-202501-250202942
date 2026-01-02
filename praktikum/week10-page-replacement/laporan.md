@@ -92,8 +92,8 @@ def page_replacement_fifo(reference_string, num_frames):
 
 ## Hasil Eksekusi
 Sertakan screenshot hasil percobaan atau diagram:
-![Screenshot hasil](./screenshots/Screenshot%202025-12-24%20102234.png)
-![Screenshot hasil](./screenshots/Screenshot%202025-12-24%20102315.png)
+![Screenshot hasil](./screenshots/hasil%20simulasi1.png)
+![Screenshot hasil](./screenshots/hasil%20simulasi2.png)
 ---
 
 ## Analisis
