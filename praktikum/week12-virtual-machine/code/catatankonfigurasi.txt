@@ -1,0 +1,29 @@
+A. SPESIFIKASI HOST (KOMPUTER ASLI)
+-----------------------------------------------------
+OS Host         : Windows 10 64-bit
+RAM Host        : 16 GB
+Software VM     : Oracle VirtualBox 7.2.4
+File ISO        : ubuntu-24.04-desktop-amd64.iso
+
+B. IDENTITAS GUEST OS
+-----------------------------------------------------
+Nama VM         : Linux-Ubuntu
+OS Guest        : Ubuntu linux 64-bit
+Username        : lutfi
+Password        : 123456
+Hostname        : Linux-Ubuntu
+
+C. SKENARIO PENGUJIAN RESOURCE
+-----------------------------------------------------
+Skenario 1: Konfigurasi Normal (High Performance)
+- Base Memory (RAM) : 4000 MB (4 GB)
+- Processor (CPU)   : 2 Core
+- Base Disk Memory  : 20 GB
+- Video Memory      : 128 MB
+- Hasil Test        : Lancar membuka 5 tab Firefox.
+
+Skenario 2: Konfigurasi Rendah (Low Performance)
+- Base Memory (RAM) : 2000 MB (2 GB)
+- Processor (CPU)   : 1 Core
+- Base Disk Memory  : 20 GB
+- Hasil Test        : Terjadi lag signifikan, Firefox lambat merespons.
