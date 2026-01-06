@@ -1,20 +1,24 @@
 
-# Laporan Praktikum Minggu [X]
-Topik: [Tuliskan judul topik, misalnya "Arsitektur Sistem Operasi dan Kernel"]
+# Laporan Praktikum Minggu [12]
+Topik:  Virtualisasi Menggunakan Virtual Machine
 
 ---
 
 ## Identitas
-- **Nama**  : [Nama Mahasiswa]  
-- **NIM**   : [NIM Mahasiswa]  
-- **Kelas** : [Kelas]
+- **Nama & NIM**  
+- Ilham Dzufikar Barokah (250202942)
+- Asyifani Lutfiana Nadzif (250202931)
+- **Kelas** : 1IKRB
 
 ---
 
 ## Tujuan
 Tuliskan tujuan praktikum minggu ini.  
-Contoh:  
-> Mahasiswa mampu menjelaskan fungsi utama sistem operasi dan peran kernel serta system call.
+1. Menginstal perangkat lunak virtualisasi (VirtualBox/VMware).  
+2. Membuat dan menjalankan sistem operasi guest di dalam VM.  
+3. Mengatur konfigurasi resource VM (CPU, RAM, storage).  
+4. Menjelaskan mekanisme proteksi OS melalui virtualisasi.  
+5. Menyusun laporan praktikum instalasi dan konfigurasi VM secara sistematis.
 
 ---
 
@@ -60,11 +64,16 @@ Tuliskan 2–3 poin kesimpulan dari praktikum ini.
 ---
 
 ## Quiz
-1. [Pertanyaan 1]  
+1. Apa perbedaan antara host OS dan guest OS?
+   
+   **Jawaban:**
+
+2. Apa peran hypervisor dalam virtualisasi?
+   
    **Jawaban:**  
-2. [Pertanyaan 2]  
-   **Jawaban:**  
-3. [Pertanyaan 3]  
+   
+3. Mengapa virtualisasi meningkatkan keamanan sistem?
+   
    **Jawaban:**  
 
 ---
