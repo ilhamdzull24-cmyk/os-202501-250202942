@@ -229,33 +229,39 @@ cd praktikum/week13-docker-resource-limit/code
 docker build -t week13-resource-limit .
 ```
 ![Screenshot hasil](./screenshots/Build%20Docker%20Image.png)
+
 2. Eksekusi Tanpa Limit Resource
 ```bash
 docker run --rm week13-resource-limit
 ```
 ![Screenshot hasil](./screenshots/Eksekusi%20Tanpa%20Limit%20Resource%201.png)
 ![Screenshot hasil](./screenshots/Eksekusi%20Tanpa%20Limit%20Resource%202.png)
+
 3. Eksekusi Dengan Limit CPU (--cpus="0.5")
 ```bash
 docker run --rm --cpus="0.5" week13-resource-limit
 ```
 ![Screenshot hasil](./screenshots/Eksekusi%20Dengan%20Limit%20CPU%20(--cpus=0.5)%201.png)
 ![Screenshot hasil](./screenshots/Eksekusi%20Dengan%20Limit%20CPU%20(--cpus=0.5)%202.png)
+
 4.  Eksekusi Dengan Limit Memory (--memory="256m")
 ```bash
 docker run --rm --memory="256m" week13-resource-limit
 ```
 ![Screenshot hasil](./screenshots/Eksekusi%20Dengan%20Limit%20Memory%20(--memory=256m)%201.png)
+
 5. Eksekusi Dengan Limit Memory Ketat (--memory="128m")
 ```bash
 docker run --rm --memory="128m" week13-resource-limit
 ```
 ![Screenshot hasil](./screenshots/Eksekusi%20Dengan%20Limit%20Memory%20Ketat%20(--memory=128m).png)
+
 6. Eksekusi Dengan Limit CPU dan Memory
 ```bash
 docker run --rm --cpus="0.5" --memory="256m" week13-resource-limit
 ```
 ![Screenshot hasil](./screenshots/Eksekusi%20Dengan%20Limit%20CPU%20dan%20Memory.png)
+
 7. Monitoring dengan docker stats
 ```bash
 # Terminal 1: Jalankan container tanpa --rm
